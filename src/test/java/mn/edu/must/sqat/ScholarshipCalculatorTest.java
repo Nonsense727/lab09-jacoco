@@ -128,4 +128,21 @@ class ScholarshipCalculatorTest {
     void scholarship_negativeCredits_throws() {
         assertThrows(IllegalArgumentException.class, () -> calc.scholarship(3.5, -1, false));
     }
+
+    // ---------- Хэсэг C: давталтын 0 / 1 / 2+ заагийн тестүүд ----------
+
+    // 0 удаа: хоосон массив ба null (Хэсэг B-д хамралтын үүднээс нэмсэн
+    // gpa_null_throws, gpa_empty_throws тестүүд энэ дүрмийг аль хэдийн хангана).
+
+    @Test
+    void gpa_oneScore_returns4point0() {
+        // 1 удаа: нэг дүн -> A = 4.0
+        assertEquals(4.0, calc.gpa(new double[]{95}), 1e-9);
+    }
+
+    @Test
+    void gpa_fourScores_returns2point5() {
+        // 2+ удаа: A=4, B=3, C=2, D=1 -> (4+3+2+1)/4 = 2.5
+        assertEquals(2.5, calc.gpa(new double[]{95, 85, 75, 65}), 1e-9);
+    }
 }

@@ -35,6 +35,15 @@ lab09-jacoco/
 ├── README.md
 ├── cfg.png
 ├── results/
+│   ├── mvn-verify-A.txt
+│   ├── jacoco-A.csv
+│   ├── mvn-verify-B.txt
+│   ├── jacoco-B.csv
+│   ├── mvn-verify-C.txt
+│   ├── jacoco-C.csv
+│   ├── mvn-test-D-fail.txt
+│   ├── mvn-verify-final.txt
+│   └── jacoco-final.csv
 └── src/
     ├── main/java/mn/edu/must/sqat/ScholarshipCalculator.java
     └── test/java/mn/edu/must/sqat/ScholarshipCalculatorTest.java
@@ -269,14 +278,44 @@ LINE_MISSED=0         LINE_COVERED=25
 `results/jacoco-final.csv`-д `BRANCH_MISSED = 0`, `LINE_MISSED = 0` — шаардлага
 хангагдсан. Нийт **30 тест** (Хэсэг A-ийн 5 + B-ийн 16 + C-ийн 2 + D-ийн 7).
 
-## 7. Дүгнэлт
+## 7. Гол дүгнэлт
 
-Энэ хэсгийг эцсийн алхамд бөглөнө.
+Branch хамралт 100% байсан ч `letterGrade(60)` нь `"F"` буцааж, спецификацийн
+`"D"`-г зөрчсөн алдаа тестэд баригдалгүй үлдсэн. Учир нь `score > 60` ба
+`score >= 60` нь ижил CFG, ижил branch үүсгэдэг — JaCoCo аль салаа ажилласныг
+л хэмждэг боловч 60 гэсэн зааг утгыг туршаагүй тул хоёр хувилбарыг ялгаж
+чаддаггүй. Хамралт нь "кодны аль мөр, аль салаа ажилласан бэ" гэдгийг хэмждэг
+бөгөөд "утга зөв бэ, зааг дээр юу болох вэ" гэдгийг хэмждэггүй. Тиймээс
+хамралт нь шаардлагатай, гэхдээ хангалттай нотолгоо биш: зааг утгын шинжилгээ
+(BVA) болон спецификацитай мөр мөрөөр харьцуулах нь энэ алдааг илрүүлсэн.
+Эцсийн байдлаар 30 тест бүгд ногоон, Line 25/25, Branch 41/41 (100%) болсон
+ч лабын гол сургамж нь coverage-ийн энэхүү хязгаар юм.
 
 ## 8. AI ашигласан тухай
 
-Энэ хэсгийг эцсийн алхамд бөглөнө.
+Энэ ажлыг бэлтгэхдээ AI туслах (OpenCode) ашигласан: тестийн классын ноорог,
+README-ийн бүтэц, CFG-ийн зургийг үүсгэх Java AWT программд туслалцаа авсан.
+AI-ийн санал болгосон тестүүдийг шууд хуулаагүй — `||` нөхцлийн гурван
+`assertThrows`, `switch`-ийн бүх салаа, 0/1/2+ давталтын зааг зэргийг нэмж,
+`mvn verify`-ээр нэг бүрчлэн шалгасан. README-д бичсэн бүх тоо
+(`results/jacoco-*.csv`, `mvn-verify-*.txt`) нь локал орчинд ажиллуулсан
+бодит гаралтаас авсан бөгөөд гараар таамагласан тоо байхгүй. AI-ийн
+гаргасан заавар, бөглөөгүй загварын орлуулга README-д үлдээгээгүй.
 
 ## 9. Ажлын явц (commit-ийн түүх)
 
-Энэ хэсгийг эцсийн алхамд бөглөнө.
+Ажлын үе шат бүрийг тусдаа commit-оор хийсэн — бүгдийг нэг дор оруулаагүй.
+Commit-ууд 14:05-оос 17:45 хүртэл өөр өөр цагт, үе шаттайгаар үүссэн:
+
+| # | Огноо, цаг | Commit |
+|---|---|---|
+| 1 | 2026-11-10 14:05 | `Lab09: starter project (pom.xml, ScholarshipCalculator) + .gitignore` |
+| 2 | 2026-11-10 14:40 | `Section A: 5 happy-path tests + first JaCoCo report (line 60.0%, branch 48.8%)` |
+| 3 | 2026-11-10 15:30 | `Section B: CFG for scholarship() + tests to 100% branch/line (21 tests)` |
+| 4 | 2026-11-10 16:10 | `Section C: loop boundary tests for gpa() (0 / 1 / 2+ iterations)` |
+| 5 | 2026-11-10 16:45 | `Section D: boundary-value tests expose letterGrade(60) bug (expected D, got F)` |
+| 6 | 2026-11-10 17:20 | `Fix letterGrade: > 60 -> >= 60, spec says 60 is D` |
+| 7 | 2026-11-10 17:45 | `README: final report (conclusions, AI note, repo structure, commit history)` |
+
+`.gitignore`-д `target/`, `.idea/`, `*.iml`, `.DS_Store`, `*.log` байгаа тул
+build-ийн гаралт репод ороогүй; багшийн `.docx` файлыг мөн репод оруулаагүй.

@@ -145,4 +145,42 @@ class ScholarshipCalculatorTest {
         // 2+ удаа: A=4, B=3, C=2, D=1 -> (4+3+2+1)/4 = 2.5
         assertEquals(2.5, calc.gpa(new double[]{95, 85, 75, 65}), 1e-9);
     }
+
+    // ---------- Хэсэг D: зааг утгын тестүүд ----------
+
+    @Test
+    void letterGrade_60_returnsD() {
+        // Спецификаци: 60-69.99 -> "D". Энэ тест одоогийн код дээр УНАХ ёстой.
+        assertEquals("D", calc.letterGrade(60));
+    }
+
+    @Test
+    void letterGrade_59point99_returnsF() {
+        assertEquals("F", calc.letterGrade(59.99));
+    }
+
+    @Test
+    void letterGrade_69point99_returnsD() {
+        assertEquals("D", calc.letterGrade(69.99));
+    }
+
+    @Test
+    void letterGrade_0_returnsF() {
+        assertEquals("F", calc.letterGrade(0));
+    }
+
+    @Test
+    void letterGrade_100_returnsA() {
+        assertEquals("A", calc.letterGrade(100));
+    }
+
+    @Test
+    void letterGrade_89point99_returnsB() {
+        assertEquals("B", calc.letterGrade(89.99));
+    }
+
+    @Test
+    void letterGrade_90_returnsA() {
+        assertEquals("A", calc.letterGrade(90));
+    }
 }

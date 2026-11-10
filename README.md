@@ -199,7 +199,54 @@ branch coverage 100% хэвээр байж болно; тиймээс 0/1/2+ з�
 
 ## 6. Хэсэг D — Хамралт 100% боловч алдаа амьд
 
-Энэ хэсгийг дараагийн алхамд бөглөнө.
+### 6.1 Зааг утгын тестүүд
+
+Branch хамралт 100% болсон ч кодын зөв эсэхийг шалгахын тулд `letterGrade()`-д
+зааг утгын тестүүд нэмсэн:
+
+| Тест | Оролт | Хүлээлт |
+|---|---|---|
+| `letterGrade_60_returnsD` | 60 | `"D"` |
+| `letterGrade_59point99_returnsF` | 59.99 | `"F"` |
+| `letterGrade_69point99_returnsD` | 69.99 | `"D"` |
+| `letterGrade_0_returnsF` | 0 | `"F"` |
+| `letterGrade_100_returnsA` | 100 | `"A"` |
+| `letterGrade_89point99_returnsB` | 89.99 | `"B"` |
+| `letterGrade_90_returnsA` | 90 | `"A"` |
+
+### 6.2 Унасан тест
+
+`mvn test` (гаралт: `results/mvn-test-D-fail.txt`):
+
+```
+[ERROR] Tests run: 30, Failures: 1, Errors: 0, Skipped: 0
+[ERROR]   ScholarshipCalculatorTest.letterGrade_60_returnsD:154 expected: <D> but was: <F>
+[ERROR] BUILD FAILURE
+```
+
+Яг унасан тест нь **`letterGrade_60_returnsD`** бөгөөд мессеж нь
+`expected: <D> but was: <F>`. Бусад 29 тест ногоон — өөрөөр хэлбэл зөвхөн
+60 гэсэн зааг утга дээр л зөрүү илэрч байна.
+
+### 6.3 Алдааны шалтгаан
+
+`ScholarshipCalculator.letterGrade()`-ийн 26-р мөр:
+
+```java
+if (score > 60)  return "D";
+```
+
+Спецификацид 60–69.99 оноо `"D"` байх ёстой. Гэвч `60 > 60` нь `false`
+болж `return "F"` руу шилждэг — зөв нь `score >= 60` байх ёстой. `>` ба `>=`
+нь ижил CFG, ижил branch-уудыг үүсгэдэг тул JaCoCo хоёуланд нь 100% хамралт
+өгдөг; 60-ыг шалгасан тест л ялгааг илрүүлнэ.
+
+### 6.4 Засвар
+
+`score > 60`-ийг `score >= 60` болгон засах ажлыг **тусдаа commit**-оор хийнэ
+(commit message: `Fix letterGrade: > 60 -> >= 60, spec says 60 is D`).
+Засварын дараа бүх тест ногоон болж, эцсийн хэмжилтийг
+`results/mvn-verify-final.txt`, `results/jacoco-final.csv`-д хадгална.
 
 ## 7. Дүгнэлт
 

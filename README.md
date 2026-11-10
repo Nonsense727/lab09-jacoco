@@ -241,12 +241,33 @@ if (score > 60)  return "D";
 нь ижил CFG, ижил branch-уудыг үүсгэдэг тул JaCoCo хоёуланд нь 100% хамралт
 өгдөг; 60-ыг шалгасан тест л ялгааг илрүүлнэ.
 
-### 6.4 Засвар
+### 6.4 Засвар ба эцсийн хэмжилт
 
-`score > 60`-ийг `score >= 60` болгон засах ажлыг **тусдаа commit**-оор хийнэ
-(commit message: `Fix letterGrade: > 60 -> >= 60, spec says 60 is D`).
-Засварын дараа бүх тест ногоон болж, эцсийн хэмжилтийг
-`results/mvn-verify-final.txt`, `results/jacoco-final.csv`-д хадгална.
+`score > 60`-ийг `score >= 60` болгон зассан — **тусдаа commit** (commit message:
+`Fix letterGrade: > 60 -> >= 60, spec says 60 is D`). Засварын дараа
+`mvn verify` (гаралт: `results/mvn-verify-final.txt`):
+
+```
+[INFO] Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+```
+
+`results/jacoco-final.csv`:
+
+```
+INSTRUCTION_MISSED=0  INSTRUCTION_COVERED=152
+BRANCH_MISSED=0       BRANCH_COVERED=41
+LINE_MISSED=0         LINE_COVERED=25
+```
+
+| Хэмжүүр | Хамрагдсан / Нийт | Хувь |
+|---|---|---|
+| Instruction | 152 / 152 | 100% |
+| **Branch** | **41 / 41** | **100%** |
+| **Line** | **25 / 25** | **100%** |
+
+`results/jacoco-final.csv`-д `BRANCH_MISSED = 0`, `LINE_MISSED = 0` — шаардлага
+хангагдсан. Нийт **30 тест** (Хэсэг A-ийн 5 + B-ийн 16 + C-ийн 2 + D-ийн 7).
 
 ## 7. Дүгнэлт
 
